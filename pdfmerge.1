@@ -1,0 +1,76 @@
+.\" Copyright (c) 2017, John Fischer. All rights reserved.
+
+.TH PDFMERGE 1 "13 March 2017"
+
+.SH NAME
+pdfmerge \- PDF merging utility
+.SH SYNOPSIS
+.nf
+\fBpdf\fR [\fB\-h\fR] [\fB-v\fR] [\fB-o\fR OUTPUT] [\fB-i\fR INPUT [INPUT ...]]
+.fi
+
+.PP
+.SH DESCRIPTION
+.I pdfmerge
+is a utility for merging PDF files into a single file.
+.PP
+\fB-h\fR
+.RS 4n
+Print the help message for the command.
+.RE
+.PP
+\fB-v\fR
+.RS 4n
+Make the utility produce verbose output.
+.RE
+.PP
+\fB-o\fR OUTPUT
+.RS 4n
+Create the new PDF OUTPUT file.
+.RE
+.PP
+\fB-i\fR INPUT [INPUT ...]
+.RS 4n
+Read in the PDF INPUT file(s).
+.RE
+.PP
+.RE
+.SH EXAMPLES
+.LP
+.sp
+.PP
+\fBExample 1\fR Create a new PDF file from 3 files:
+.sp
+.in +4
+.nf
+$ \fBpdfmerge -o merged.pdf -i file1.pdf file2.pdf file2.pdf\fR
+.PP
+.fi
+.in -4
+.LP
+.sp
+.PP
+\fBExample 2\fR Create a new PDF file from 2 files with verbose output:
+.sp
+.in +4
+.nf
+$ \fBpdfmerge -o merged.pdf -i file1.pdf file2.pdf -v\fR
+output file: merged.pdf
+input file(s): file1.pdf, file2.pdf
+   adding file1.pdf
+   adding file2.pdf
+Writing merged.pdf
+Done.
+.fi
+.in -4
+.PP
+
+.SH SEE ALSO
+.sp
+.LP
+.nf
+\fIWhat is PDF\fR
+\fBhttps://acrobat.adobe.com/us/en/why-adobe/about-adobe-pdf.html\fR
+
+.SH AUTHOR
+John Fischer
