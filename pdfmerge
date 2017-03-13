@@ -1,32 +1,46 @@
 #!/usr/bin/python3
+'''
+pdfmerge utility merges pdf files into one.
+'''
 
 import argparse
 import sys
 from PyPDF2 import PdfFileMerger
 
-merger = PdfFileMerger()
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-v", "--verbose", help="make the output verbose",
-                    action="store_true")
-parser.add_argument("-o", "--output", help="output file")
-parser.add_argument("-i", "--input", nargs='+')
-args = parser.parse_args()
+def main():
+    '''main function for the program.
+    '''
+    # parse the command line arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-v", "--verbose", help="make the output verbose",
+                        action="store_true")
+    parser.add_argument("-o", "--output", help="output file")
+    parser.add_argument("-i", "--input", nargs='+')
+    args = parser.parse_args()
 
-if args.verbose:
-	display = sys.stdout
-else:
-	display = open("/dev/null", "w")
-print("output file: ", args.output, file=display)
-print("input file(s):", ", ".join(args.input), file=display)
+    # ensure that the output is handled correctly
+    if args.verbose:
+        display = sys.stdout
+    else:
+        display = open("/dev/null", "w")
+    print("output file: ", args.output, file=display)
+    print("input file(s):", ", ".join(args.input), file=display)
 
-for afile in args.input:
-	apdf = open(afile, "rb")
-	print("  adding", afile, file=display)
-	merger.append(apdf)
+    # merge the PDF files
+    merger = PdfFileMerger()
+    for afile in args.input:
+        apdf = open(afile, "rb")
+        print("  adding", afile, file=display)
+        merger.append(apdf)
 
-with open(args.output, "wb") as output:
-	print("Writing", args.output, file=display)
-	merger.write(output)
+    # output the resulting PDF file
+    with open(args.output, "wb") as output:
+        print("Writing", args.output, file=display)
+        merger.write(output)
 
-print("Done.", file=display)
+    print("Done.", file=display)
+
+
+if __name__ == "main":
+    main()
