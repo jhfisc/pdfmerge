@@ -21,8 +21,10 @@ def main():
 
     # ensure that the output is handled correctly
     if args.verbose:
+        # send output to stdout which is most likely the screen
         display = sys.stdout
     else:
+        # do not send output anywhere
         display = open("/dev/null", "w")
     print("output file: ", args.output, file=display)
     print("input file(s):", ", ".join(args.input), file=display)
