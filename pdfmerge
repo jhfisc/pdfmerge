@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 '''
+Copyright (C) 2017 by John Fischer, All Rights Reserved.
+
 pdfmerge utility merges pdf files into one.
 '''
 
