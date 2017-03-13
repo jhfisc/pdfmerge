@@ -4,45 +4,75 @@ pdfmerge utility merges pdf files into one.
 '''
 
 import argparse
+import os
 import sys
 from PyPDF2 import PdfFileMerger
 
 
-def main():
-    '''main function for the program.
+def parse_arguments():
+    '''Parse the command line arguments.
+    Returns:
+        list of Input filename(s)
+        Output filename
+        Display
     '''
     # parse the command line arguments
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="PDF merging utility")
     parser.add_argument("-v", "--verbose", help="make the output verbose",
                         action="store_true")
     parser.add_argument("-o", "--output", help="output file")
     parser.add_argument("-i", "--input", nargs='+')
     args = parser.parse_args()
 
-    # ensure that the output is handled correctly
+    # validate command line arguments
+    # The utility requires at least 1 file as input and an output file.
+    if None in (args.output, args.input):
+        parser.print_help()
+        sys.exit(1)
+
+    # The input files should exist
+    missing_file = False
+    for afile in args.input:
+        if not os.path.exists(afile):
+            print("Error:File (%s) does not exist." % afile)
+            missing_file = True
+    if missing_file:
+        sys.exit(1)
+
+    # ensure that the command output is handled correctly
+    display = open("/dev/null", "w")
     if args.verbose:
-        # send output to stdout which is most likely the screen
         display = sys.stdout
-    else:
-        # do not send output anywhere
-        display = open("/dev/null", "w")
-    print("output file: ", args.output, file=display)
-    print("input file(s):", ", ".join(args.input), file=display)
+
+    return args.input, args.output, display
+
+
+def main():
+    '''main function for the utility'''
+    # parse the command line arguments
+    input_files, output_file, display = parse_arguments()
+
+    print("output file: ", output_file, file=display)
+    print("input file(s):", ", ".join(input_files), file=display)
 
     # merge the PDF files
     merger = PdfFileMerger()
-    for afile in args.input:
+    for afile in input_files:
         apdf = open(afile, "rb")
         print("  adding", afile, file=display)
         merger.append(apdf)
 
     # output the resulting PDF file
-    with open(args.output, "wb") as output:
-        print("Writing", args.output, file=display)
+    with open(output_file, "wb") as output:
+        print("Writing", output_file, file=display)
         merger.write(output)
 
     print("Done.", file=display)
 
+    # clean up
+    if display != sys.stdout:
+        display.close()
 
-if __name__ == "main":
+
+if __name__ == "__main__":
     main()
